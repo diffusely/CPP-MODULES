@@ -1,6 +1,6 @@
-NAME	= megaphone
+NAME	= account
 
-SRC		= megaphone.cpp
+SRC		= Account.cpp tests.cpp
 OBJ		= $(SRC:%.cpp=%.o)
 
 FLAGS	= -Wall -Wextra -Werror
@@ -15,7 +15,7 @@ $(NAME):	$(OBJ) Makefile
 			$(CPP) $(FLAGS) -c $< -o $@
 
 clean:
-			rm -rf megaphone.o
+			rm -rf $(OBJ)
 
 fclean:		clean
 			rm -rf $(NAME)
