@@ -3,34 +3,105 @@
 PhoneBook::PhoneBook()
 	: m_end(false)
 	, m_start(0)
-{
-
-}
+	, m_count(0)
+{}
 
 PhoneBook::~PhoneBook()
-{
+{}
 
+std::string PhoneBook::addDote(const std::string &str)
+{
+    if (str.length() > 10)
+        return str.substr(0, 9) + ".";
+    return str;
 }
 
 void PhoneBook::add()
 {
-	if (m_start == 8)
-		m_start = 0;
+    std::string input;
 
-	std::cout << "first name:";
-	std::cin >> m_contacts[m_start].firsname;
-	std::cout << "last name:";
-	std::cin >> m_contacts[m_start].lastName;
-	std::cout << "nick name:";
-	std::cin >> m_contacts[m_start].nickName;
-	std::cout << "phone number:";
-	std::cin >> m_contacts[m_start].phoneNumber;
+    do {
+        std::cout << "First name: ";
+        std::getline(std::cin, input);
+        if (input.empty()) 
+			std::cout << "This field cannot be empty!\n";
+    } while (input.empty());
+    m_contacts[m_start].setFirstName(input);
 
-	++m_start;
+    do {
+        std::cout << "Last name: ";
+        std::getline(std::cin, input);
+        if (input.empty())
+			std::cout << "This field cannot be empty!\n";
+    } while (input.empty());
+    m_contacts[m_start].setLastName(input);
 
+    do {
+        std::cout << "Nick name: ";
+        std::getline(std::cin, input);
+        if (input.empty())
+			std::cout << "This field cannot be empty!\n";
+    } while (input.empty());
+    m_contacts[m_start].setNickName(input);
+
+    do {
+        std::cout << "Phone number: ";
+        std::getline(std::cin, input);
+        if (input.empty())
+			std::cout << "This field cannot be empty!\n";
+    } while (input.empty());
+    m_contacts[m_start].setPhoneNumber(input);
+
+    do {
+        std::cout << "Darkest secret: ";
+        std::getline(std::cin, input);
+        if (input.empty())
+			std::cout << "This field cannot be empty!\n";
+    } while (input.empty());
+    m_contacts[m_start].setDarkestSecret(input);
+
+    m_start = (m_start + 1) % 8;
+	if (m_count < 8)
+		++m_count;
 }
+
+void PhoneBook::printTable()
+{
+	std::cout << std::setw(10) << "index" << "|"
+              << std::setw(10) << "first name" << "|"
+              << std::setw(10) << "last name" << "|"
+              << std::setw(10) << "nickname" << "\n";
+
+    for (int i = 0; i < m_count; i++) {
+        std::cout << std::setw(10) << i << "|"
+                  << std::setw(10) << addDote(m_contacts[i].getFirstName()) << "|"
+                  << std::setw(10) << addDote(m_contacts[i].getLastName()) << "|"
+                  << std::setw(10) << addDote(m_contacts[i].getNickName()) << "\n";
+    }
+}
+
+void PhoneBook::findIndex()
+{
+	int index;
+	std::cout << "input index: ";
+	std::cin >> index;
+
+	if (index < 0 || index >= m_count) {
+		std::cout << "Invalid index.\n";
+		return ;
+	}
+
+	std::cout << "First name: " << m_contacts[index].getFirstName() << "\n";
+    std::cout << "Last name: " << m_contacts[index].getLastName() << "\n";
+    std::cout << "Nick name: " << m_contacts[index].getNickName() << "\n";
+    std::cout << "Phone number: " << m_contacts[index].getPhoneNumber() << "\n";
+    std::cout << "Darkest secret: " << m_contacts[index].getDarkestSecret() << "\n";
+}
+
 void PhoneBook::search()
 {
+	printTable();
+	findIndex();
 }
 
 void PhoneBook::exit()
@@ -40,10 +111,11 @@ void PhoneBook::exit()
 
 void PhoneBook::run()
 {
+	std::string input;
+
 	while (!m_end) {
 
-		std::string input;
-		std::cin >> input;
+		std::getline(std::cin, input);
 
 		if (input == "ADD")
 				add();

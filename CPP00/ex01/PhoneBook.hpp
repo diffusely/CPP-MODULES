@@ -1,26 +1,28 @@
 #pragma once
 
+#include "Contact.h"
+
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 class PhoneBook
 {
-	struct Contact
-	{
-		std::string firsname;
-		std::string lastName;
-		std::string nickName;
-		std::string phoneNumber;
-	};
-
 public:
 	PhoneBook();
 	~PhoneBook();
 
+	void run();
+
+private:
+	// Private functions
 	void add();
 	void search();
 	void exit();
-	void run();
+
+	std::string addDote(const std::string &str);
+	void printTable();
+	void findIndex();
 
 private:
 	// Contacts
@@ -30,5 +32,5 @@ private:
 	// Exit and Contact start
 	bool m_end;
 	int m_start;
-
+	int m_count;
 };
