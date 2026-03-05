@@ -83,8 +83,20 @@ void PhoneBook::printTable()
 void PhoneBook::findIndex()
 {
 	int index;
-	std::cout << "input index: ";
-	std::cin >> index;
+	do {
+		
+		std::cout << "input index: ";
+		std::cin >> index;
+
+		if (std::cin.eof())
+			return ;
+		if (std::cin.fail()) {
+    	    std::cin.clear();
+    	    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    	    std::cout << "Invalid input. Enter a number.\n";
+		} else break;
+	
+	} while(1);
 
 	if (index < 0 || index >= m_count) {
 		std::cout << "Invalid index.\n";
@@ -116,6 +128,9 @@ void PhoneBook::run()
 	while (!m_end) {
 
 		std::getline(std::cin, input);
+
+		if (std::cin.eof())
+			break ;
 
 		if (input == "ADD")
 				add();
