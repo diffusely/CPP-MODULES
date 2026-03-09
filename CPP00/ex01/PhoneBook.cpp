@@ -9,6 +9,23 @@ PhoneBook::PhoneBook()
 PhoneBook::~PhoneBook()
 {}
 
+bool PhoneBook::isAlpha(const std::string &s)
+{
+    for (size_t i = 0; i < s.size(); i++) {
+        if (!std::isalpha((unsigned char)(s[i])))
+            return false;
+    }
+    return true;
+}
+bool PhoneBook::isDigits(const std::string &s)
+{
+	for (size_t i = 0; i < s.size(); i++) {
+        if (!std::isdigit((unsigned char)(s[i])))
+            return false;
+    }
+    return true;
+}
+
 std::string PhoneBook::addDote(const std::string &str)
 {
     if (str.length() > 10)
@@ -23,46 +40,72 @@ void PhoneBook::add()
     do {
         std::cout << "First name: ";
         std::getline(std::cin, input);
-        if (input.empty()) 
-			std::cout << "This field cannot be empty!\n";
+        if (std::cin.eof()) return;
+
+        if (input.empty()) {
+            std::cout << "This field cannot be empty!\n";
+        } else if (!isAlpha(input)) {
+            std::cout << "First name must contain only letters!\n";
+            input.clear();
+        }
     } while (input.empty());
     m_contacts[m_start].setFirstName(input);
 
     do {
         std::cout << "Last name: ";
         std::getline(std::cin, input);
-        if (input.empty())
-			std::cout << "This field cannot be empty!\n";
+        if (std::cin.eof()) return;
+
+        if (input.empty()) {
+            std::cout << "This field cannot be empty!\n";
+        } else if (!isAlpha(input)) {
+            std::cout << "Last name must contain only letters!\n";
+            input.clear();
+        }
     } while (input.empty());
     m_contacts[m_start].setLastName(input);
 
     do {
         std::cout << "Nick name: ";
         std::getline(std::cin, input);
-        if (input.empty())
-			std::cout << "This field cannot be empty!\n";
+        if (std::cin.eof()) return;
+
+        if (input.empty()) {
+            std::cout << "This field cannot be empty!\n";
+        } else if (!isAlpha(input)) {
+            std::cout << "Nick name must contain only letters!\n";
+            input.clear();
+        }
     } while (input.empty());
     m_contacts[m_start].setNickName(input);
 
     do {
         std::cout << "Phone number: ";
         std::getline(std::cin, input);
-        if (input.empty())
-			std::cout << "This field cannot be empty!\n";
+        if (std::cin.eof()) return;
+
+        if (input.empty()) {
+            std::cout << "This field cannot be empty!\n";
+        } else if (!isDigits(input)) {
+            std::cout << "Phone number must contain only digits!\n";
+            input.clear();
+        }
     } while (input.empty());
     m_contacts[m_start].setPhoneNumber(input);
 
     do {
         std::cout << "Darkest secret: ";
         std::getline(std::cin, input);
-        if (input.empty())
-			std::cout << "This field cannot be empty!\n";
+        if (std::cin.eof()) return;
+
+        if (input.empty()) {
+            std::cout << "This field cannot be empty!\n";
+        }
     } while (input.empty());
     m_contacts[m_start].setDarkestSecret(input);
 
     m_start = (m_start + 1) % 8;
-	if (m_count < 8)
-		++m_count;
+    if (m_count < 8) ++m_count;
 }
 
 void PhoneBook::printTable()
@@ -125,10 +168,14 @@ void PhoneBook::run()
 {
 	std::string input;
 
+	std::cout << "*** Command List ***" << std::endl;
+	std::cout << "ADD:\tsave a new contact." << std::endl;
+	std::cout << "SEARCH:\tdisplay a specific contact." << std::endl;
+	std::cout << "EXIT:\texit program." << std::endl << std::endl;
 	while (!m_end) {
 
 		std::getline(std::cin, input);
-
+							
 		if (std::cin.eof())
 			break ;
 
@@ -138,5 +185,7 @@ void PhoneBook::run()
 				search();
 		else if (input == "EXIT")
 				exit();
+		else
+			std::cout << "Invalid command.\n";
 	}
 }

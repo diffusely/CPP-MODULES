@@ -2,6 +2,7 @@
 
 #include "Contact.h"
 
+#include <cctype>
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -24,6 +25,9 @@ private:
 	std::string addDote(const std::string &str);
 	void printTable();
 	void findIndex();
+
+	bool isAlpha(const std::string &s);
+	bool isDigits(const std::string &s);
 
 private:
 	// Contacts
