@@ -1,6 +1,6 @@
-NAME	= frag
+NAME	= diamond
 
-SRC		= main.cpp ClapTrap.cpp FragTrap.cpp ScavTrap.cpp
+SRC		= main.cpp ClapTrap.cpp FragTrap.cpp ScavTrap.cpp DiamondTrap.cpp
 OBJ		= $(SRC:%.cpp=%.o)
 
 FLAGS	= -Wall -Wextra -Werror
