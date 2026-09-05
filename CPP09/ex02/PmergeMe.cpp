@@ -40,8 +40,7 @@ static bool isValidPositiveInt(const std::string& s, long& outValue)
 	if (i == s.size())
 		return (false);
 
-	for (; i < s.size(); i++)
-	{
+	for (; i < s.size(); i++) {
 		if (!std::isdigit(static_cast<unsigned char>(s[i])))
 			return (false);
 	}
@@ -59,8 +58,7 @@ std::vector<int> PmergeMe::parseInput(int argc, char** argv)
 {
 	std::vector<int> result;
 
-	for (int i = 1; i < argc; i++)
-	{
+	for (int i = 1; i < argc; i++) {
 		std::string token(argv[i]);
 		long value = 0;
 
@@ -85,30 +83,25 @@ static Container mergeInsertionSort(Container vec)
 
 	bool hasStraggler = (vec.size() % 2 != 0);
 	T straggler = T();
-	if (hasStraggler)
-	{
+	if (hasStraggler) {
 		straggler = vec.back();
 		vec.pop_back();
 	}
 
 	Container mainChain;
 
-	if (!vec.empty())
-	{
+	if (!vec.empty()) {
 		Container winners;
 		Container losers;
 
-		for (size_t i = 0; i < vec.size(); i += 2)
-		{
+		for (size_t i = 0; i < vec.size(); i += 2) {
 			T a = vec[i];
 			T b = vec[i + 1];
-			if (a > b)
-			{
+			if (a > b) {
 				winners.push_back(a);
 				losers.push_back(b);
 			}
-			else
-			{
+			else {
 				winners.push_back(b);
 				losers.push_back(a);
 			}
@@ -123,8 +116,7 @@ static Container mergeInsertionSort(Container vec)
 		mainChain = mergeInsertionSort(winners);
 
 		std::vector<T> orderedLosers;
-		for (typename Container::iterator it = mainChain.begin(); it != mainChain.end(); ++it)
-		{
+		for (typename Container::iterator it = mainChain.begin(); it != mainChain.end(); ++it) {
 			std::vector<T>& bucket = companions[*it];
 			orderedLosers.push_back(bucket.back());
 			bucket.pop_back();
@@ -132,16 +124,14 @@ static Container mergeInsertionSort(Container vec)
 
 		mainChain.insert(mainChain.begin(), orderedLosers[0]);
 
-		for (size_t i = 1; i < orderedLosers.size(); i++)
-		{
+		for (size_t i = 1; i < orderedLosers.size(); i++) {
 			typename Container::iterator pos =
 				std::lower_bound(mainChain.begin(), mainChain.end(), orderedLosers[i]);
 			mainChain.insert(pos, orderedLosers[i]);
 		}
 	}
 
-	if (hasStraggler)
-	{
+	if (hasStraggler) {
 		typename Container::iterator pos =
 			std::lower_bound(mainChain.begin(), mainChain.end(), straggler);
 		mainChain.insert(pos, straggler);
@@ -172,24 +162,24 @@ void PmergeMe::run(int argc, char** argv)
 	std::cout << "Before: ";
 	printContainer(input);
 
-	std::vector<int> vecCopy(input.begin(), input.end());
-	std::deque<int> deqCopy(input.begin(), input.end());
+	std::vector<int> copy_vec(input.begin(), input.end());
+	std::deque<int> copy_dec(input.begin(), input.end());
 
 	double startVec = nowMicroseconds();
-	std::vector<int> sortedVec = mergeInsertionSort(vecCopy);
+	std::vector<int> vec_sort = mergeInsertionSort(copy_vec);
 	double endVec = nowMicroseconds();
 
 	double startDeq = nowMicroseconds();
-	std::deque<int> sortedDeq = mergeInsertionSort(deqCopy);
+	std::deque<int> deq_sort = mergeInsertionSort(copy_dec);
 	double endDeq = nowMicroseconds();
 
 	std::cout << "After: ";
-	printContainer(sortedVec);
+	printContainer(vec_sort);
 
 	std::cout << "Time to process a range of " << input.size()
 		<< " elements with std::vector : " << (endVec - startVec) << " us" << std::endl;
 	std::cout << "Time to process a range of " << input.size()
 		<< " elements with std::deque : " << (endDeq - startDeq) << " us" << std::endl;
 
-	(void)sortedDeq;
+	(void)deq_sort;
 }
